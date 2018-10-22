@@ -12,25 +12,23 @@ import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.SftpException;
 
 public class SftpHelper {
-	public static List<String> getFileNames(ChannelSftp channelSftp, String folderPath) 
-			throws SftpException {
+	public static List<String> getFileNames(ChannelSftp channelSftp, String folderPath) throws SftpException {
 		if (channelSftp == null) {
 			return null;
 		}
 		List<String> fileNameList = new ArrayList<String>();
 		@SuppressWarnings("rawtypes")
 		Vector filelist = channelSftp.ls(folderPath);
-        for(int i = 0; i < filelist.size(); i++){
-            LsEntry entry = (LsEntry) filelist.get(i);
-            if (!"..".equals(entry.getFilename()) 
-            		&& !".".equals(entry.getFilename())) {
-            	fileNameList.add(entry.getFilename());
-            }
-        }
-        return fileNameList;
+		for (int i = 0; i < filelist.size(); i++) {
+			LsEntry entry = (LsEntry) filelist.get(i);
+			if (!"..".equals(entry.getFilename()) && !".".equals(entry.getFilename())) {
+				fileNameList.add(entry.getFilename());
+			}
+		}
+		return fileNameList;
 	}
-	
-	public static InputStream getInputStream(ChannelSftp channelSftp, String remoteFolderPath, String fileName) 
+
+	public static InputStream getInputStream(ChannelSftp channelSftp, String remoteFolderPath, String fileName)
 			throws SftpException {
 		if (channelSftp == null) {
 			return null;
@@ -38,9 +36,9 @@ public class SftpHelper {
 		channelSftp.cd(remoteFolderPath);
 		return channelSftp.get(fileName);
 	}
-	
-	public static void uploadFile(ChannelSftp channelSftp, String localFilePath, String remoteFolderPath, String fileName) 
-			throws SftpException, IOException {
+
+	public static void uploadFile(ChannelSftp channelSftp, String localFilePath, String remoteFolderPath,
+			String fileName) throws SftpException, IOException {
 		if (channelSftp == null) {
 			return;
 		}
@@ -51,9 +49,9 @@ public class SftpHelper {
 			inputStream.close();
 		}
 	}
-	
-	public static void moveFile(ChannelSftp channelSftp, String remoteSrcFolder, String remoteDesFolder, String fileName) 
-			throws SftpException, IOException {
+
+	public static void moveFile(ChannelSftp channelSftp, String remoteSrcFolder, String remoteDesFolder,
+			String fileName) throws SftpException, IOException {
 		if (channelSftp == null) {
 			return;
 		}
