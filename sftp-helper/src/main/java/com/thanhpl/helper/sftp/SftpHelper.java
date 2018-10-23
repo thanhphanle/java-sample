@@ -37,10 +37,13 @@ public class SftpHelper {
 		return channelSftp.get(fileName);
 	}
 
-	public static void uploadFile(ChannelSftp channelSftp, String localFilePath, String remoteFolderPath,
+	/*
+	 * Return remote path of uploaded file
+	 */
+	public static String uploadFile(ChannelSftp channelSftp, String localFilePath, String remoteFolderPath,
 			String fileName) throws SftpException, IOException {
 		if (channelSftp == null) {
-			return;
+			return null;
 		}
 		channelSftp.cd(remoteFolderPath);
 		FileInputStream inputStream = new FileInputStream(localFilePath);
@@ -48,19 +51,65 @@ public class SftpHelper {
 			channelSftp.put(localFilePath, fileName);
 			inputStream.close();
 		}
+		return remoteFolderPath + '/' + fileName;
 	}
 
-	public static void moveFile(ChannelSftp channelSftp, String remoteSrcFolder, String remoteDesFolder,
+	/*
+	 * Return remote path of new file
+	 */
+	public static String moveFile(ChannelSftp channelSftp, String remoteSrcFolder, String remoteDesFolder,
 			String fileName) throws SftpException, IOException {
 		if (channelSftp == null) {
-			return;
+			return null;
 		}
 		channelSftp.cd(remoteSrcFolder);
+		// Use separator '/' for SFTP to Linux
+		String remoteSrcPath = remoteSrcFolder + '/' + fileName;
+		String remoteDesPath = remoteDesFolder + '/' + fileName;
 		InputStream tempStream = channelSftp.get(fileName);
 		if (tempStream != null) {
-			// Use separator '/' for SFTP to Linux
-			channelSftp.rename(remoteSrcFolder + '/' + fileName, remoteDesFolder + '/' + fileName);
+
+			channelSftp.rename(remoteSrcPath, remoteDesPath);
 			tempStream.close();
+			return remoteDesPath;
 		}
+		return remoteSrcPath;
+	}
+
+	/*
+	 * Move file and rename Return remote path of new file
+	 */
+	public static String moveFile(ChannelSftp channelSftp, String remoteSrcFolder, String remoteDesFolder,
+			String srcFileName, String desFileName) throws SftpException, IOException {
+		if (channelSftp == null) {
+			return null;
+		}
+		channelSftp.cd(remoteSrcFolder);
+		// Use separator '/' for SFTP to Linux
+		String remoteSrcPath = remoteSrcFolder + '/' + srcFileName;
+		String remoteDesPath = remoteDesFolder + '/' + desFileName;
+		InputStream tempStream = channelSftp.get(srcFileName);
+		if (tempStream != null) {
+			channelSftp.rename(remoteSrcPath, remoteDesPath);
+			tempStream.close();
+			return remoteDesPath;
+		}
+		return remoteSrcPath;
+	}
+
+	/*
+	 * Create new folder, just use mkdir and handle error if existed. Return folder
+	 * path
+	 */
+	public static String createFolder(ChannelSftp channelSftp, String folderPath) {
+		if (channelSftp == null) {
+			return null;
+		}
+		try {
+			channelSftp.mkdir(folderPath);
+		} catch (Exception e) {
+			// Ignore
+		}
+		return folderPath;
 	}
 }
