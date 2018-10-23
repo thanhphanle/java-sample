@@ -68,7 +68,6 @@ public class SftpHelper {
 		String remoteDesPath = remoteDesFolder + '/' + fileName;
 		InputStream tempStream = channelSftp.get(fileName);
 		if (tempStream != null) {
-
 			channelSftp.rename(remoteSrcPath, remoteDesPath);
 			tempStream.close();
 			return remoteDesPath;
