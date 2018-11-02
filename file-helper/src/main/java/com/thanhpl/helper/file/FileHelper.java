@@ -22,6 +22,11 @@ public class FileHelper {
 		return fileList;
 	}
 	
+	public static boolean exists(String filePath) {
+		File file = new File(filePath);
+		return file.exists();
+	}
+	
 	public static boolean deleteFile(String filePath) {
 		File file = new File(filePath);
 		return file.delete();

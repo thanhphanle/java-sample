@@ -21,7 +21,7 @@ public class NioFileHelper {
 		return files;
 	}
 	
-	public static boolean checkExist(String filePath) {
+	public static boolean exists(String filePath) {
 		Path path = Paths.get(filePath);
 		return Files.exists(path);
 	}
