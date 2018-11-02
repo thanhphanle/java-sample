@@ -1,55 +1,58 @@
 package com.thanhpl.helper.file;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHelper {
-	public static List<File> getFiles(String folderPath) {
+	public static List<File> getFiles(String dirPath) {
 		List<File> fileList = new ArrayList<File>();
-		try {
-			File directory = new File(folderPath);
-			File[] files = directory.listFiles();
-			if (files != null) {
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].isFile()) {
-						fileList.add(files[i]);
-					}
+		File directory = new File(dirPath);
+		File[] files = directory.listFiles();
+		if (files != null) {
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isFile()) {
+					fileList.add(files[i]);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return fileList;
 	}
-
-	public static boolean moveFile(String srcFilePath, String desFilePath) {
-		try {
-			Path srcPath = Paths.get(srcFilePath);
-			Path desPath = Paths.get(desFilePath);
-			if (!Files.exists(desPath)) {
-				Files.createDirectories(desPath.getParent());
-			}
-			Files.move(srcPath, desPath, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	
+	public static boolean deleteFile(String filePath) {
+		File file = new File(filePath);
+		return file.delete();
 	}
 
-	public static boolean deleteFile(String filePath) {
+	public static String saveFile(String filePath, byte[] bytes) throws IOException {		
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+
 		try {
-			File file = new File(filePath);
-			return file.delete();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			fw = new FileWriter(filePath);
+			bw = new BufferedWriter(fw);
+			bw.write(new String(bytes, "UTF-8"));
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+				throw ex;
+			}
 		}
+		return filePath;
+	}
+	
+	public static boolean createDir(String dirPath) {
+		return new File(dirPath).mkdirs();
 	}
 }
