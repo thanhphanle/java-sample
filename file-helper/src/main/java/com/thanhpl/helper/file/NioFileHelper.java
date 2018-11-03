@@ -28,6 +28,9 @@ public class NioFileHelper {
 	
 	public static void saveFile(String filePath, byte[] bytes) throws IOException {
 		Path path = Paths.get(filePath);
+		if (!Files.exists(path)) {
+			Files.createDirectories(path.getParent());
+		}
         Files.write(path, bytes);
 	}
 	
