@@ -12,6 +12,13 @@ public class StringUtil {
 		return false;
 	}
 	
+	public static int length(String str) {
+		if (str == null) {
+			return -1;
+		}
+		return str.length();
+	}
+	
 	public static boolean isEqual(String str1, String str2) {
 		if (str1 == null || str2 == null) {
 			return false;
