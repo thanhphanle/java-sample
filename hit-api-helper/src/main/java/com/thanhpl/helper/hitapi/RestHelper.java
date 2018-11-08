@@ -11,10 +11,6 @@ import java.net.URL;
 import org.json.JSONObject;
 
 public class RestHelper {
-	
-	private static final String POST_METHOD = "POST";
-	private static final String GET_METHOD = "GET";
-	private static final String JSON_TYPE = "application/json";
 
 	public static JSONObject post(String endpointUrl, JSONObject paramJson) throws Exception {
 		if (endpointUrl == null || endpointUrl.trim().isEmpty()) {
@@ -25,28 +21,28 @@ public class RestHelper {
 		}
 
 		HttpURLConnection conn = null;
-		BufferedReader br = null;
-		OutputStream os = null;
-		InputStreamReader ipr = null;
+		BufferedReader bufReader = null;
+		OutputStream outStr = null;
+		InputStreamReader inStrReader = null;
 		try {
 			URL url = new URL(endpointUrl);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
-			conn.setRequestMethod(POST_METHOD);
-			conn.setRequestProperty("Content-Type", JSON_TYPE);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/json");
 
-			os = conn.getOutputStream();
-			os.write(paramJson.toString().getBytes());
+			outStr = conn.getOutputStream();
+			outStr.write(paramJson.toString().getBytes());
 
 			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 			}
 
-			ipr = new InputStreamReader((conn.getInputStream()));
-			br = new BufferedReader(ipr);
+			inStrReader = new InputStreamReader((conn.getInputStream()));
+			bufReader = new BufferedReader(inStrReader);
 			String responseData = "";
 			String outputLine;
-			while ((outputLine = br.readLine()) != null) {
+			while ((outputLine = bufReader.readLine()) != null) {
 				responseData += outputLine;
 			}
 
@@ -55,7 +51,7 @@ public class RestHelper {
 		} catch (MalformedURLException e) {
 			throw e;
 		} catch (IOException e) {
-			throw e; 
+			throw e;
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -63,44 +59,44 @@ public class RestHelper {
 				conn.disconnect();
 			}
 			try {
-				if (os != null) {
-					os.close();
-					os.flush();
+				if (outStr != null) {
+					outStr.close();
+					outStr.flush();
 				}
-				if (br != null) {
-					br.close();
+				if (bufReader != null) {
+					bufReader.close();
 				}
-				if (ipr != null) {
-					ipr.close();
+				if (inStrReader != null) {
+					inStrReader.close();
 				}
 			} catch (IOException e) {
 				throw e;
 			}
 		}
 	}
-	
+
 	public static JSONObject get(String endpointUrl) throws Exception {
 		if (endpointUrl == null || endpointUrl.trim().isEmpty()) {
 			return null;
 		}
 
 		HttpURLConnection conn = null;
-		BufferedReader br = null;
-		InputStreamReader ipr = null;
+		BufferedReader bufReader = null;
+		InputStreamReader inStrReader = null;
 		try {
 			URL url = new URL(endpointUrl);
 			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod(GET_METHOD);
+			conn.setRequestMethod("GET");
 
 			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 			}
 
-			ipr = new InputStreamReader((conn.getInputStream()));
-			br = new BufferedReader(ipr);
+			inStrReader = new InputStreamReader((conn.getInputStream()));
+			bufReader = new BufferedReader(inStrReader);
 			String responseData = "";
 			String outputLine;
-			while ((outputLine = br.readLine()) != null) {
+			while ((outputLine = bufReader.readLine()) != null) {
 				responseData += outputLine;
 			}
 
@@ -109,7 +105,7 @@ public class RestHelper {
 		} catch (MalformedURLException e) {
 			throw e;
 		} catch (IOException e) {
-			throw e; 
+			throw e;
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -117,11 +113,11 @@ public class RestHelper {
 				conn.disconnect();
 			}
 			try {
-				if (br != null) {
-					br.close();
+				if (bufReader != null) {
+					bufReader.close();
 				}
-				if (ipr != null) {
-					ipr.close();
+				if (inStrReader != null) {
+					inStrReader.close();
 				}
 			} catch (IOException e) {
 				throw e;
