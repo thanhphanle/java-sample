@@ -10,7 +10,7 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
-public class RestfulHelper {
+public class RestHelper {
 	
 	private static final String POST_METHOD = "POST";
 	private static final String GET_METHOD = "GET";
@@ -67,6 +67,56 @@ public class RestfulHelper {
 					os.close();
 					os.flush();
 				}
+				if (br != null) {
+					br.close();
+				}
+				if (ipr != null) {
+					ipr.close();
+				}
+			} catch (IOException e) {
+				throw e;
+			}
+		}
+	}
+	
+	public static JSONObject get(String endpointUrl) throws Exception {
+		if (endpointUrl == null || endpointUrl.trim().isEmpty()) {
+			return null;
+		}
+
+		HttpURLConnection conn = null;
+		BufferedReader br = null;
+		InputStreamReader ipr = null;
+		try {
+			URL url = new URL(endpointUrl);
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod(GET_METHOD);
+
+			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+
+			ipr = new InputStreamReader((conn.getInputStream()));
+			br = new BufferedReader(ipr);
+			String responseData = "";
+			String outputLine;
+			while ((outputLine = br.readLine()) != null) {
+				responseData += outputLine;
+			}
+
+			JSONObject resJson = new JSONObject(responseData);
+			return resJson;
+		} catch (MalformedURLException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e; 
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
+			try {
 				if (br != null) {
 					br.close();
 				}
