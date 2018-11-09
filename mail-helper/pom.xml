@@ -4,22 +4,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.thanhpl</groupId>
-	<artifactId>java-helpers</artifactId>
+	<artifactId>mail-helper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
-	<modules>
-		<module>file-helper</module>
-		<module>csv-helper</module>
-		<module>sftp-helper</module>
-		<module>date-helper</module>
-		<module>string-util</module>
-		<module>hit-api-helper</module>
-		<module>mail-helper</module>
-	</modules>
+	<name>mail-helper</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+	</dependencies>
 </project>
