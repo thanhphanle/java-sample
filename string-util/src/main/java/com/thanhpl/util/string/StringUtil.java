@@ -23,7 +23,10 @@ public class StringUtil {
 		if (str1 == null || str2 == null) {
 			return false;
 		}
-		if (str1.equalsIgnoreCase(str2)) {
+		if (str1 != null && str1.equalsIgnoreCase(str2)) {
+			return true;
+		}
+		if (str2 != null && str2.equalsIgnoreCase(str1)) {
 			return true;
 		}
 		return false;
