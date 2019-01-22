@@ -1,2 +1,2 @@
-# java-helpers
-Java helper classes
+# java-sample
+List of java samples
