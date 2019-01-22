@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.thanhpl</groupId>
-	<artifactId>hit-api-helper</artifactId>
+	<artifactId>api-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>hit-api-helper</name>
+	<name>api-client</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
