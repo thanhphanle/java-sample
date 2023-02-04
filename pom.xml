@@ -14,7 +14,7 @@
 		<module>sftp-helper</module>
 		<module>date-helper</module>
 		<module>string-util</module>
-		<module>hit-api-helper</module>
+		<module>api-client</module>
 		<module>mail-helper</module>
 	</modules>
 
